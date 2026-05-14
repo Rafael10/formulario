@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gráfico de Ventas</title>
+
+  <!-- Librería Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    body{
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background: #f4f4f4;
+    }
+
+    .container{
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 700px;
+      margin: auto;
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    }
+
+    input{
+      padding: 10px;
+      margin: 5px;
+      width: 200px;
+    }
+
+    button{
+      padding: 10px 20px;
+      background: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    canvas{
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <h2>Formulario de Ventas por Mes</h2>
+
+  <form id="ventasForm">
+    <input type="text" id="mes" placeholder="Mes" required>
+    <input type="number" id="ventas" placeholder="Ventas" required>
+
+    <button type="submit">
+      Agregar
+    </button>
+  </form>
+
+  <!-- Gráfico incrustado -->
+  <canvas id="graficoVentas"></canvas>
+
+</div>
+
+<script>
+
+  // Arrays donde se guarda la data
+  const meses = [];
+  const ventas = [];
+
+  // Crear gráfico
+  const ctx = document.getElementById('graficoVentas');
+
+  const grafico = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: meses,
+      datasets: [{
+        label: 'Ventas por Mes',
+        data: ventas,
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
+  // Capturar formulario
+  document.getElementById('ventasForm')
+    .addEventListener('submit', function(e){
+
+      e.preventDefault();
+
+      const mes = document.getElementById('mes').value;
+      const venta = document.getElementById('ventas').value;
+
+      // Guardar datos
+      meses.push(mes);
+      ventas.push(venta);
+
+      // Actualizar gráfico
+      grafico.update();
+
+      // Limpiar formulario
+      document.getElementById('ventasForm').reset();
+  });
+
+</script>
+
+</body>
+</html>
